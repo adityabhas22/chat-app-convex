@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "npx convex deploy --prod --without-prod-url && next build --webpack",
+    "build": "npx convex deploy --yes && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "convex:dev": "convex dev",
