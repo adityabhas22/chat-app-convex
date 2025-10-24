@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Doc } from "@/convex/_generated/dataModel";
 import { Sidebar } from "./sidebar";
 import { ChatWindow } from "./chat-window";
-import { UserSearch } from "./user-search";
+import { FriendsPage } from "../friends/friends-page";
+import { WelcomeScreen } from "./welcome-screen";
 
 interface ChatLayoutProps {
   currentUser: Doc<"users">;
@@ -12,41 +13,44 @@ interface ChatLayoutProps {
 
 export function ChatLayout({ currentUser }: ChatLayoutProps) {
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
-  const [showSearch, setShowSearch] = useState(false);
+  const [currentView, setCurrentView] = useState<"chat" | "friends">("chat");
+
+  const handleStartChat = (groupId: string) => {
+    // Select the created DM and switch to chat view
+    setSelectedGroupId(groupId);
+    setCurrentView("chat");
+  };
+
+  const handleSelectGroup = (groupId: string) => {
+    setSelectedGroupId(groupId);
+    setCurrentView("chat");
+  };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-[var(--color-muted)]">
+      {/* Sidebar - always visible */}
       <Sidebar
         currentUser={currentUser}
         selectedGroupId={selectedGroupId}
-        onSelectGroup={setSelectedGroupId}
-        onShowSearch={() => setShowSearch(true)}
+        onSelectGroup={handleSelectGroup}
+        onShowFriends={() => setCurrentView("friends")}
+        currentView={currentView}
       />
 
-      {/* Main Chat Area */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
-        {selectedGroupId ? (
+        {currentView === "friends" ? (
+          <FriendsPage
+            currentUser={currentUser}
+            onStartChat={handleStartChat}
+            onBack={() => setCurrentView("chat")}
+          />
+        ) : selectedGroupId ? (
           <ChatWindow groupId={selectedGroupId} currentUser={currentUser} />
         ) : (
-          <div className="flex-1 flex items-center justify-center text-gray-400">
-            <div className="text-center">
-              <p className="text-xl mb-2">Welcome to Chat App</p>
-              <p className="text-sm">
-                Select a conversation or start a new one
-              </p>
-            </div>
-          </div>
+          <WelcomeScreen onShowFriends={() => setCurrentView("friends")} />
         )}
       </div>
-
-      {/* User Search Modal */}
-      {showSearch && (
-        <UserSearch
-          currentUser={currentUser}
-          onClose={() => setShowSearch(false)}
-        />
-      )}
     </div>
   );
 }

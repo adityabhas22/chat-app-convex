@@ -8,6 +8,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* Brand */
+  --color-primary: #6366f1; /* indigo-500 */
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #22c55e; /* emerald-500 */
+  --color-secondary-foreground: #052e16; /* emerald-950 */
+  --color-accent: #a855f7; /* purple-500 */
+  --color-accent-foreground: #ffffff;
+
+  /* Surfaces */
+  --color-muted: #f1f5f9; /* slate-100 */
+  --color-muted-foreground: #475569; /* slate-600 */
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a; /* slate-900 */
+  --color-border: #e2e8f0; /* slate-200 */
+  --color-input: #e2e8f0;
+  --color-ring: #c7d2fe; /* indigo-200 */
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,11 +33,59 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-primary: #818cf8; /* indigo-400 */
+    --color-primary-foreground: #0b0b0b;
+    --color-secondary: #34d399; /* emerald-400 */
+    --color-secondary-foreground: #052e16;
+    --color-accent: #c084fc; /* purple-400 */
+    --color-accent-foreground: #0a0a0a;
+
+    --color-muted: #0f172a; /* slate-900 */
+    --color-muted-foreground: #cbd5e1; /* slate-300 */
+    --color-card: #0b0f1a;
+    --color-card-foreground: #e5e7eb;
+    --color-border: #1f2937; /* gray-800 */
+    --color-input: #111827; /* gray-900 */
+    --color-ring: #3730a3; /* indigo-800 */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-geist-sans),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
+}
+
+/* Toast animations */
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.slide-in-from-right-full {
+  animation: slide-in-from-right 0.3s ease-out;
+}
+
+.duration-300 {
+  animation-duration: 300ms;
 }

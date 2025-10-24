@@ -12,14 +12,16 @@ interface SidebarProps {
   currentUser: Doc<"users">;
   selectedGroupId: string | null;
   onSelectGroup: (groupId: string) => void;
-  onShowSearch: () => void;
+  onShowFriends: () => void;
+  currentView: "chat" | "friends";
 }
 
 export function Sidebar({
   currentUser,
   selectedGroupId,
   onSelectGroup,
-  onShowSearch,
+  onShowFriends,
+  currentView,
 }: SidebarProps) {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
 
@@ -37,25 +39,31 @@ export function Sidebar({
 
   return (
     <>
-      <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+      <div className="w-80 bg-[var(--color-card)] border-r border-[var(--color-border)] flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-200">
+        <div className="p-4 border-b border-[var(--color-border)]">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-gray-800">Chat App</h1>
+            <h1 className="text-xl font-bold text-[var(--color-card-foreground)]">
+              Chat App
+            </h1>
             <UserButton afterSignOutUrl="/sign-in" />
           </div>
 
           <div className="flex gap-2">
             <button
-              onClick={onShowSearch}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              onClick={onShowFriends}
+              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)] ${
+                currentView === "friends"
+                  ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)]"
+                  : "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:brightness-95"
+              }`}
             >
               <UserPlus className="w-4 h-4" />
-              <span className="text-sm">Add Friend</span>
+              <span className="text-sm">Friends</span>
             </button>
             <button
               onClick={() => setShowCreateGroup(true)}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[var(--color-secondary)] text-[var(--color-primary-foreground)] rounded-lg hover:brightness-95 transition focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]"
             >
               <Users className="w-4 h-4" />
               <span className="text-sm">New Group</span>
@@ -70,8 +78,8 @@ export function Sidebar({
               Friend Requests ({pendingRequests.length})
             </p>
             <button
-              onClick={onShowSearch}
-              className="text-xs text-blue-600 hover:underline"
+              onClick={onShowFriends}
+              className="text-xs text-[var(--color-primary)] hover:underline"
             >
               View requests
             </button>
@@ -85,32 +93,34 @@ export function Sidebar({
               <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
             </div>
           ) : groups.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-[var(--color-muted-foreground)]">
               <MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300" />
               <p className="text-sm">No conversations yet</p>
               <p className="text-xs mt-1">Add friends to start chatting!</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-[var(--color-border)]">
               {groups.map((group) => (
                 <button
                   key={group._id}
                   onClick={() => onSelectGroup(group._id)}
-                  className={`w-full p-4 text-left hover:bg-gray-50 transition ${
-                    selectedGroupId === group._id ? "bg-blue-50" : ""
+                  className={`w-full p-4 text-left hover:bg-[var(--color-muted)] transition ${
+                    selectedGroupId === group._id
+                      ? "bg-indigo-50 dark:bg-indigo-950/20"
+                      : ""
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-semibold">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
                       {group.isDirectMessage
                         ? group.displayName.charAt(0).toUpperCase()
                         : group.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-800 truncate">
+                      <p className="font-semibold text-[var(--color-card-foreground)] truncate">
                         {group.isDirectMessage ? group.displayName : group.name}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-[var(--color-muted-foreground)]">
                         {group.members.length} member
                         {group.members.length !== 1 ? "s" : ""}
                       </p>
@@ -123,16 +133,16 @@ export function Sidebar({
         </div>
 
         {/* User Info Footer */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="p-4 border-t border-[var(--color-border)] bg-[var(--color-muted)]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-indigo-500 flex items-center justify-center text-white font-semibold">
               {currentUser.username.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-gray-800 truncate">
+              <p className="font-semibold text-[var(--color-card-foreground)] truncate">
                 {currentUser.username}
               </p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-[var(--color-muted-foreground)] truncate">
                 {currentUser.email}
               </p>
             </div>

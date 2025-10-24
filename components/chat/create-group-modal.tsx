@@ -64,18 +64,18 @@ export function CreateGroupModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-md max-h-[80vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg w-full max-w-md max-h-[80vh] flex flex-col shadow-xl">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-[var(--color-border)]">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-[var(--color-card-foreground)] flex items-center gap-2">
               <Users className="w-6 h-6" />
               Create Group
             </h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full transition"
+              className="p-2 hover:bg-[var(--color-muted)] rounded-full transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -89,7 +89,7 @@ export function CreateGroupModal({
         >
           {/* Group Name */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-[var(--color-card-foreground)] mb-2">
               Group Name
             </label>
             <input
@@ -97,7 +97,7 @@ export function CreateGroupModal({
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
               placeholder="Enter group name..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-3 border border-[var(--color-input)] rounded-lg bg-[var(--color-card)] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]"
               autoFocus
               maxLength={50}
             />
@@ -105,12 +105,12 @@ export function CreateGroupModal({
 
           {/* Member Selection */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-[var(--color-card-foreground)] mb-2">
               Add Members ({selectedMembers.size} selected)
             </label>
 
             {friends.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">
+              <p className="text-center text-[var(--color-muted-foreground)] py-8">
                 No friends to add. Add friends first!
               </p>
             ) : (
@@ -122,21 +122,23 @@ export function CreateGroupModal({
                     onClick={() => toggleMember(friend._id)}
                     className={`w-full flex items-center gap-3 p-3 rounded-lg transition ${
                       selectedMembers.has(friend._id)
-                        ? "bg-blue-50 border-2 border-blue-600"
-                        : "bg-gray-50 border-2 border-transparent hover:bg-gray-100"
+                        ? "bg-indigo-50 border-2 border-indigo-600"
+                        : "bg-[var(--color-card)] border-2 border-[var(--color-border)] hover:bg-[var(--color-muted)]"
                     }`}
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
                       {friend.username.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 text-left">
-                      <p className="font-semibold text-gray-800">
+                      <p className="font-semibold text-[var(--color-card-foreground)]">
                         {friend.username}
                       </p>
-                      <p className="text-sm text-gray-500">{friend.email}</p>
+                      <p className="text-sm text-[var(--color-muted-foreground)]">
+                        {friend.email}
+                      </p>
                     </div>
                     {selectedMembers.has(friend._id) && (
-                      <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
                         <svg
                           className="w-4 h-4 text-white"
                           fill="none"
@@ -161,7 +163,7 @@ export function CreateGroupModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+              className="flex-1 px-4 py-3 border border-[var(--color-input)] text-[var(--color-foreground)] rounded-lg hover:bg-[var(--color-muted)] transition"
               disabled={isCreating}
             >
               Cancel
@@ -171,7 +173,7 @@ export function CreateGroupModal({
               disabled={
                 isCreating || !groupName.trim() || selectedMembers.size === 0
               }
-              className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+              className="flex-1 px-4 py-3 bg-[var(--color-primary)] text-[var(--color-primary-foreground)] rounded-lg hover:brightness-95 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
             >
               {isCreating ? "Creating..." : "Create Group"}
             </button>

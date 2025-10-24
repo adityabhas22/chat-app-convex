@@ -63,15 +63,17 @@ export function ChatWindow({ groupId, currentUser }: ChatWindowProps) {
   return (
     <div className="flex-1 flex flex-col">
       {/* Chat Header */}
-      <div className="bg-white border-b border-gray-200 p-4">
+      <div className="bg-[var(--color-card)] border-b border-[var(--color-border)] p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
               {displayName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h2 className="font-semibold text-gray-800">{displayName}</h2>
-              <p className="text-xs text-gray-500 flex items-center gap-1">
+              <h2 className="font-semibold text-[var(--color-card-foreground)]">
+                {displayName}
+              </h2>
+              <p className="text-xs text-[var(--color-muted-foreground)] flex items-center gap-1">
                 <Users className="w-3 h-3" />
                 {group.members.length} member
                 {group.members.length !== 1 ? "s" : ""}
@@ -82,9 +84,9 @@ export function ChatWindow({ groupId, currentUser }: ChatWindowProps) {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[var(--color-muted)]/40">
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400">
+          <div className="flex items-center justify-center h-full text-[var(--color-muted-foreground)]">
             <p className="text-sm">No messages yet. Start the conversation!</p>
           </div>
         ) : (
@@ -107,15 +109,15 @@ export function ChatWindow({ groupId, currentUser }: ChatWindowProps) {
                     </p>
                   )}
                   <div
-                    className={`rounded-2xl px-4 py-2 ${
+                    className={`rounded-2xl px-4 py-2 shadow-sm ${
                       isOwnMessage
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-800"
+                        ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)]"
+                        : "bg-[var(--color-card)] text-[var(--color-card-foreground)] border border-[var(--color-border)]"
                     }`}
                   >
                     <p className="text-sm break-words">{msg.content}</p>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1 px-1">
+                  <p className="text-xs text-[var(--color-muted-foreground)] mt-1 px-1">
                     {new Date(msg.createdAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -130,19 +132,19 @@ export function ChatWindow({ groupId, currentUser }: ChatWindowProps) {
       </div>
 
       {/* Message Input */}
-      <div className="bg-white border-t border-gray-200 p-4">
+      <div className="bg-[var(--color-card)] border-t border-[var(--color-border)] p-4">
         <form onSubmit={handleSendMessage} className="flex gap-2">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+            className="flex-1 px-4 py-2 border border-[var(--color-input)] rounded-full bg-[var(--color-muted)]/40 text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]"
           />
           <button
             type="submit"
             disabled={!message.trim()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition flex items-center gap-2"
+            className="px-6 py-2 bg-[var(--color-primary)] text-[var(--color-primary-foreground)] rounded-full hover:brightness-95 disabled:bg-gray-300 disabled:cursor-not-allowed transition flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]"
           >
             <Send className="w-4 h-4" />
             <span>Send</span>
