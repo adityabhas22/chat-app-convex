@@ -35,7 +35,7 @@ Before you begin, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/adityabhas22/chat-app-convex.git
 cd chat-app
 ```
 
